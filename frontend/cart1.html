@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vegetable Market - Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .item-image {
+            width: 120px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .item-info {
+            flex: 1;
+        }
+        .item-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .item-price {
+            font-size: 18px;
+        }
+        button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div id="cartItems">
+    </div>
+    <p>Total: $<span id="cartTotal">0</span></p>
+    <button onclick="clearCart()">Clear Cart</button>
+    <button onclick="checkout()">Buy Now</button>
+
+    <script>
+        function updateCart() {
+            const cartItemsElement = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+            let cartHTML = '';
+            let total = 0;
+
+            Object.entries(cart).forEach(([item, { price, quantity }]) => {
+                const itemTotal = price * quantity;
+                total += itemTotal;
+                cartHTML += `
+                    <div class="cart-item">
+                        <img src="veg_placeholder.jpeg" alt="Vegetable" class="item-image">
+                        <div class="item-info">
+                            <div class="item-name">${item}</div>
+                            <div class="item-price">$${price} per pound</div>
+                            <div>Quantity: ${quantity}</div>
+                            <div>Total: $${itemTotal}</div>
+                        </div>
+                    </div>`;
+            });
+
+            cartItemsElement.innerHTML = cartHTML;
+            cartTotalElement.textContent = total;
+        }
+
+        updateCart();
+
+        function clearCart() {
+            localStorage.removeItem('cart');
+            updateCart();
+        }
+
+        function checkout() {
+            // Implement your checkout logic here
+            alert('Thank you for your purchase!');
+            clearCart();
+        }
+    </script>
+</body>
+</html>
